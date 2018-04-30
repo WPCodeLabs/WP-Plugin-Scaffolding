@@ -2,43 +2,22 @@
 
 namespace Wpcl\WpPluginScaffolding\Classes\PostTypes;
 
-class Testimonials extends \Wpcl\WpPluginScaffolding\Classes\PostTypes implements \Wpcl\WpPluginScaffolding\Interfaces\Filter_Hook_Subscriber {
-
-	/**
-	 * Get the action hooks this class subscribes to.
-	 * @return array
-	 */
-	public static function get_filters() {
-		return array(
-			array( 'the_content' => 'create_quote' ),
-			array( 'the_excerpt' => 'create_quote' ),
-		);
-	}
-
-	public function create_quote( $content ) {
-		if( get_post_type() === 'testimonials' ) {
-			// Get citation
-			$citation = get_post_meta( get_the_id(), 'citation', true );
-			// Wrap content in blockquote
-			$output  = '<blockquote class="testinomial">';
-			$output .= $content;
-			$output .= !empty( $citation ) ? sprintf( '<cite>%s</cite>', esc_attr( $citation ) ) : '';
-			$output .= '</blockquote>';
-			return $output;
-		}
-		return $content;
-	}
+class Sample extends \Wpcl\WpPluginScaffolding\Classes\PostTypes {
 
 	/**
 	 * Get post type arguments
+	 *
+	 * I recommend using a tool such as GenerateWP to easily generate post type arguments
+	 *
+	 * @see https://generatewp.com/post-type/
 	 * @since 1.0.0
 	 */
 	public static function get_post_type_args() {
 		$labels = array(
-			'name'                  => _x( 'Testimonials', 'Post Type General Name', self::$name ),
-			'singular_name'         => _x( 'Testimonial', 'Post Type Singular Name', self::$name ),
-			'menu_name'             => __( 'Testimonials', self::$name ),
-			'name_admin_bar'        => __( 'Testimonial', self::$name ),
+			'name'                  => _x( 'Samples', 'Post Type General Name', self::$name ),
+			'singular_name'         => _x( 'Sample', 'Post Type Singular Name', self::$name ),
+			'menu_name'             => __( 'Sample Post Type', self::$name ),
+			'name_admin_bar'        => __( 'Sample Post Type', self::$name ),
 			'archives'              => __( 'Item Archives', self::$name ),
 			'attributes'            => __( 'Item Attributes', self::$name ),
 			'parent_item_colon'     => __( 'Parent Item:', self::$name ),
@@ -64,17 +43,17 @@ class Testimonials extends \Wpcl\WpPluginScaffolding\Classes\PostTypes implement
 			'filter_items_list'     => __( 'Filter items list', self::$name ),
 		);
 		$args = array(
-			'label'                 => __( 'Testimonial', self::$name ),
-			'description'           => __( 'Testimonial information page.', self::$name ),
+			'label'                 => __( 'Sample', self::$name ),
+			'description'           => __( 'Post Type Description', self::$name ),
 			'labels'                => $labels,
-			'supports'              => array( 'title', 'editor', 'author', 'thumbnail', 'revisions', 'excerpt', 'genesis-seo', 'genesis-cpt-archives-settings', 'genesis-layouts', 'genesis-scripts' ),
-			'taxonomies'            => array( 'category', 'post_tag' ),
+			'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields', 'page-attributes', 'post-formats' ),
+			'taxonomies'            => array( 'category', 'post_tag', 'sample' ),
 			'hierarchical'          => true,
 			'public'                => true,
 			'show_ui'               => true,
 			'show_in_menu'          => true,
 			'menu_position'         => 5,
-			'menu_icon'             => 'dashicons-format-quote',
+			'menu_icon'             => 'dashicons-admin-post',
 			'show_in_admin_bar'     => true,
 			'show_in_nav_menus'     => true,
 			'can_export'            => true,
@@ -83,7 +62,7 @@ class Testimonials extends \Wpcl\WpPluginScaffolding\Classes\PostTypes implement
 			'publicly_queryable'    => true,
 			'capability_type'       => 'page',
 		);
+
 		return $args;
 	}
-
 }

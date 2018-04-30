@@ -58,6 +58,13 @@ function wp_plugin_scaffolding_autoload_register( $className ) {
 }
 
 /**
+ * Code to run during plugin activation
+ */
+function wp_plugin_scaffolding_activate() {
+	\Wpcl\WpPluginScaffolding\Activator::activate();
+}
+
+/**
  * Kick off the plugin
  * Check PHP version and make sure our other funcitons will be supported
  * Register autoloader function
@@ -75,15 +82,12 @@ function run_wp_plugin_scaffolding() {
 	}
 	// Register Autoloader
 	spl_autoload_register( 'wp_plugin_scaffolding_autoload_register' );
+	// Add activation hook
+	register_activation_hook( WP_PLUGIN_SCAFFOLDING_ROOT, 'wp_plugin_scaffolding_activate' );
 	// Instantiate our plugin
 	$plugin = \Wpcl\WpPluginScaffolding\Plugin::get_instance();
 	// Test our plugin
-	$plugin->test();
+	$plugin->burn_baby_burn();
 
 }
 run_wp_plugin_scaffolding();
-
-function wp_plugin_debug_styles() {
-	echo '<style>.xdebug-var-dump{margin-left:200px;</style>';
-}
-add_action( 'admin_head', 'wp_plugin_debug_styles' );

@@ -21,7 +21,7 @@ class Activator {
 	 */
 	public static function activate() {
 		// Register post types
-		\Wpcl\WpPluginScaffolding\Classes\Posts::add_post_types();
+		\Wpcl\WpPluginScaffolding\Classes\PostTypes::add_post_types();
 		// Register taxonomies
 		\Wpcl\WpPluginScaffolding\Classes\Taxonomies::add_taxonomies();
 		// Flush rewrite rules

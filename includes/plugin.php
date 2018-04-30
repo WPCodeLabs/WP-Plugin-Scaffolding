@@ -126,7 +126,7 @@ class Plugin {
 		return self::$path . ltrim( $path, '/' );
 	}
 
-	public function test() {
+	public function burn_baby_burn() {
 		$classes = $this->get_child_classes( self::path( 'includes/classes' ) );
 		// Loop through each post type
 		foreach( $classes as $class_name ) {
