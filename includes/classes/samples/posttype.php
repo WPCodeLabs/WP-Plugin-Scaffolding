@@ -1,8 +1,8 @@
 <?php
 
-namespace Wpcl\WpPluginScaffolding\Classes\PostTypes;
+namespace Wpcl\Scaffolding\Classes\PostTypes;
 
-class Sample extends \Wpcl\WpPluginScaffolding\Classes\PostTypes {
+class PostType extends \Wpcl\Scaffolding\Plugin {
 
 	/**
 	 * Get post type arguments
@@ -42,11 +42,17 @@ class Sample extends \Wpcl\WpPluginScaffolding\Classes\PostTypes {
 			'items_list_navigation' => __( 'Items list navigation', self::$name ),
 			'filter_items_list'     => __( 'Filter items list', self::$name ),
 		);
+		$rewrite = array(
+			'slug'                  => 'samples',
+			'with_front'            => true,
+			'pages'                 => true,
+			'feeds'                 => true,
+		);
 		$args = array(
 			'label'                 => __( 'Sample', self::$name ),
 			'description'           => __( 'Post Type Description', self::$name ),
 			'labels'                => $labels,
-			'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'trackbacks', 'revisions', 'custom-fields', 'page-attributes', 'post-formats' ),
+			'supports'              => array( 'title', 'editor', 'author', 'thumbnail', 'revisions', 'excerpt', 'genesis-seo', 'genesis-cpt-archives-settings', 'genesis-layouts', 'genesis-scripts' ),
 			'taxonomies'            => array( 'category', 'post_tag', 'sample' ),
 			'hierarchical'          => true,
 			'public'                => true,
@@ -61,6 +67,7 @@ class Sample extends \Wpcl\WpPluginScaffolding\Classes\PostTypes {
 			'exclude_from_search'   => false,
 			'publicly_queryable'    => true,
 			'capability_type'       => 'page',
+			'rewrite'               => $rewrite,
 		);
 
 		return $args;

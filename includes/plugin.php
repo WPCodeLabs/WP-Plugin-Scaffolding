@@ -3,12 +3,12 @@
 /**
  * The main plugin file definition
  * This file isn't instatiated directly, it acts as a shared parent for other classes
- * @link    http://midwestfamilymarketing.com
+ * @link    http://midwestdigitalmarketing.com
  * @since   1.0.0
- * @package wp_plugin_scaffolding
+ * @package wpcl_plugin_scaffolding
  */
 
-namespace Wpcl\WpPluginScaffolding;
+namespace Wpcl\Scaffolding;
 
 class Plugin {
 
@@ -18,7 +18,7 @@ class Plugin {
 	 * @access protected
 	 * @var (string) $name : The unique identifier for this plugin
 	 */
-	protected static $name = 'wp_plugin_scaffolding';
+	protected static $name = 'wpcl_plugin_scaffolding';
 
 	/**
 	 * Plugin Version
@@ -26,31 +26,7 @@ class Plugin {
 	 * @access protected
 	 * @var (string) $version : The version number of the plugin, used to version scripts / styles
 	 */
-	protected static $version = '1.0.0';
-
-	/**
-	 * Plugin Path
-	 * @since 1.0.0
-	 * @access protected
-	 * @var (string) $path : The path to the plugins location on the server, is inherited by child classes
-	 */
-	protected static $path;
-
-	/**
-	 * Plugin URL
-	 * @since 1.0.0
-	 * @access protected
-	 * @var (string) $url : The URL path to the location on the web, accessible by a browser
-	 */
-	protected static $url;
-
-	/**
-	 * Plugin Slug
-	 * @since 1.0.0
-	 * @access protected
-	 * @var (string) $slug : Basename of the plugin, needed for Wordpress to set transients, and udpates
-	 */
-	protected static $slug;
+	protected static $version = '0.1.0';
 
 	/**
 	 * Plugin Options
@@ -77,7 +53,7 @@ class Plugin {
 		// Instantiate class
 		$class = $class_name::get_instance( $class_name );
 		// Create API manager
-		$class->loader = \Wpcl\WpPluginScaffolding\Loader::get_instance();
+		$class->loader = \Wpcl\Scaffolding\Loader::get_instance();
 		// Register stuff
 		$class->loader->register( $class );
 		// Return instance
@@ -103,9 +79,7 @@ class Plugin {
 	 * @access protected
 	 */
 	protected function __construct() {
-		self::$path = plugin_dir_path( WP_PLUGIN_SCAFFOLDING_ROOT );
-		self::$url  = plugin_dir_url( WP_PLUGIN_SCAFFOLDING_ROOT );
-		self::$slug = plugin_basename( WP_PLUGIN_SCAFFOLDING_ROOT );
+		// Nothing to do here at this time
 	}
 
 	/**
@@ -114,7 +88,7 @@ class Plugin {
 	 * @access protected
 	 */
 	public static function url( $url = '' ) {
-		return self::$url . ltrim( $url, '/' );
+		return plugin_dir_url( WPCL_PLUGIN_SCAFFOLDING_ROOT ) . ltrim( $url, '/' );
 	}
 
 	/**
@@ -123,18 +97,19 @@ class Plugin {
 	 * @access protected
 	 */
 	public static function path( $path = '' ) {
-		return self::$path . ltrim( $path, '/' );
+		return plugin_dir_path( WPCL_PLUGIN_SCAFFOLDING_ROOT ) . ltrim( $path, '/' );
 	}
 
 	public function burn_baby_burn() {
-		$classes = $this->get_child_classes( self::path( 'includes/classes' ) );
-		// Loop through each post type
-		foreach( $classes as $class_name ) {
-			// Append namespace
-			$class_name = '\\Wpcl\\WpPluginScaffolding\\Classes\\' . $class_name;
-			// Register
-			$class_name::register();
+
+		foreach( array( 'Admin', 'FrontEnd', 'PostTypes', 'Taxonomies', 'Widgets' ) as $class ) {
+
+			$class = '\\Wpcl\\Scaffolding\\Classes\\' . $class;
+
+			$class::register();
 		}
+
+		load_plugin_textdomain( self::$name, false, basename( dirname( WPCL_PLUGIN_SCAFFOLDING_ROOT ) ) . '/languages' );
 	}
 
 	protected static function get_child_classes( $path = null ) {
@@ -144,6 +119,7 @@ class Plugin {
 			$reflection = new \ReflectionClass( get_called_class() );
 			// Attempt to construct to path
 			$path = self::path( sprintf( 'includes/classes/%s/', strtolower( $reflection->getShortName() ) ) );
+
 		}
 		// Bail if our path is not a directory
 		if( !is_dir( $path ) ) {
@@ -167,6 +143,16 @@ class Plugin {
 		}
 		// Return child classes;
 		return $classes;
+	}
+
+	public static function expose( $item ) {
+		if( is_admin() ) {
+			echo '<pre style="margin-left: 200px">';
+		} else {
+			echo '<pre>';
+		}
+		print_r( $item );
+		echo '</pre>';
 	}
 
 } // end class

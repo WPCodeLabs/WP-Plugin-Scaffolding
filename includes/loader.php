@@ -4,7 +4,7 @@
  * WordPress Plugin API.
  */
 
-namespace Wpcl\WpPluginScaffolding;
+namespace Wpcl\Scaffolding;
 
 class Loader {
 
@@ -12,21 +12,29 @@ class Loader {
 	 * Instances
 	 * @since 1.0.0
 	 * @access protected
-	 * @var (array) $instances : Collection of instantiated classes
+	 * @var (object) $instance : The instance of the class
 	 */
-	protected static $instances = array();
+	protected static $instance = null;
 
 	/**
 	 * Gets an instance of our class.
 	 */
-	public static function get_instance( $params = null ) {
-		// Use late static binding to get called class
-		$class = get_called_class();
-		// Get instance of class
-		if( !isset(self::$instances[$class] ) ) {
-			self::$instances[$class] = new $class();
+	public static function get_instance( $caller = null ) {
+		/**
+		 * Check if in instance exists
+		 * Create one if not
+		 */
+		if( self::$instance === null ) {
+			self::$instance = new self();
 		}
-		return self::$instances[$class];
+		/**
+		 * Register the caller
+		 */
+		self::$instance->register( $caller );
+		/**
+		 * Return the intantiated instance
+		 */
+		return self::$instance;
 	}
 
 	/**
@@ -44,15 +52,15 @@ class Loader {
 	 */
 	public function register( $object ) {
 		// Register Actions
-		if ( $object instanceof \Wpcl\WpPluginScaffolding\Interfaces\Action_Hook_Subscriber ) {
+		if ( $object instanceof \Wpcl\Scaffolding\Interfaces\Action_Hook_Subscriber ) {
 			$this->register_actions( $object );
 		}
 		// Register Filters
-		if ( $object instanceof \Wpcl\WpPluginScaffolding\Interfaces\Filter_Hook_Subscriber ) {
+		if ( $object instanceof \Wpcl\Scaffolding\Interfaces\Filter_Hook_Subscriber ) {
 			$this->register_filters( $object );
 		}
 		// Register Shortcodes
-		if ( $object instanceof \Wpcl\WpPluginScaffolding\Interfaces\Shortcode_Hook_Subscriber ) {
+		if ( $object instanceof \Wpcl\Scaffolding\Interfaces\Shortcode_Hook_Subscriber ) {
 			$this->register_shortcodes( $object );
 		}
 	}
@@ -63,14 +71,28 @@ class Loader {
 	 * @param string $name
 	 * @param mixed $parameters
 	 */
-	private function register_action( \Wpcl\WpPluginScaffolding\Interfaces\Action_Hook_Subscriber $object, $name, $parameters ) {
-
+	private function register_action( \Wpcl\Scaffolding\Interfaces\Action_Hook_Subscriber $object, $name, $parameters ) {
+		// For string params
 		if( is_string( $parameters ) ) {
-			add_action( $name, array( $object, $parameters ) );
+			// If a class method
+			if( method_exists( $object, $parameters ) ) {
+				add_action( $name, array( $object, $parameters ) );
+			}
+			// Else if a standard wordpress function
+			else if( function_exists( $parameters ) ) {
+				add_action( $name, $parameters );
+			}
 		}
-
+		// For array of params (name, priority, args)
 		elseif( is_array( $parameters ) && isset( $parameters[0] ) ) {
-			add_action( $name, array( $object, $parameters[0] ), isset( $parameters[1] ) ? $parameters[1] : 10, isset( $parameters[2] ) ? $parameters[2] : 1 );
+			// If a class method
+			if( method_exists( $object, $parameters[0] ) ) {
+				add_action( $name, array( $object, $parameters[0] ), isset( $parameters[1] ) ? $parameters[1] : 10, isset( $parameters[2] ) ? $parameters[2] : 1 );
+			}
+			// Else if a standard wordpress function
+			else if( function_exists( $parameters[0] ) ) {
+				add_action( $name, $parameters[0], isset( $parameters[1] ) ? $parameters[1] : 10, isset( $parameters[2] ) ? $parameters[2] : 1 );
+			}
 		}
 	}
 
@@ -79,7 +101,7 @@ class Loader {
 	 *
 	 * @param Action_Hook_SubscriberInterface $object
 	 */
-	private function register_actions( \Wpcl\WpPluginScaffolding\Interfaces\Action_Hook_Subscriber $object ) {
+	private function register_actions( \Wpcl\Scaffolding\Interfaces\Action_Hook_Subscriber $object ) {
 		foreach( $object->get_actions() as $action ) {
 			$this->register_action( $object, key( $action ), current( $action ) );
 		}
@@ -92,14 +114,29 @@ class Loader {
 	 * @param string                          $name
 	 * @param mixed                           $parameters
 	 */
-	private function register_filter( \Wpcl\WpPluginScaffolding\Interfaces\Filter_Hook_Subscriber $object, $name, $parameters ) {
+	private function register_filter( \Wpcl\Scaffolding\Interfaces\Filter_Hook_Subscriber $object, $name, $parameters ) {
 
-		if( is_string($parameters)) {
-			add_filter($name, array($object, $parameters));
+		// For string params
+		if( is_string( $parameters ) ) {
+			// If a class method
+			if( method_exists( $object, $parameters ) ) {
+				add_filter( $name, array( $object, $parameters ) );
+			}
+			// Else if a standard wordpress function
+			else if( function_exists( $parameters ) ) {
+				add_filter( $name, $parameters );
+			}
 		}
-
+		// For array of params (name, priority, args)
 		elseif( is_array( $parameters ) && isset( $parameters[0] ) ) {
-			add_filter( $name, array( $object, $parameters[0] ), isset( $parameters[1] ) ? $parameters[1] : 10, isset( $parameters[2] ) ? $parameters[2] : 1 );
+			// If a class method
+			if( method_exists( $object, $parameters[0] ) ) {
+				add_filter( $name, array( $object, $parameters[0] ), isset( $parameters[1] ) ? $parameters[1] : 10, isset( $parameters[2] ) ? $parameters[2] : 1 );
+			}
+			// Else if a standard wordpress function
+			else if( function_exists( $parameters[0] ) ) {
+				add_filter( $name, $parameters[0], isset( $parameters[1] ) ? $parameters[1] : 10, isset( $parameters[2] ) ? $parameters[2] : 1 );
+			}
 		}
 	}
 
@@ -108,7 +145,7 @@ class Loader {
 	 *
 	 * @param Filter_Hook_SubscriberInterface $object
 	 */
-	private function register_filters( \Wpcl\WpPluginScaffolding\Interfaces\Filter_Hook_Subscriber $object) {
+	private function register_filters( \Wpcl\Scaffolding\Interfaces\Filter_Hook_Subscriber $object) {
 
 		foreach( $object->get_filters() as $filter ) {
 			$this->register_filter( $object, key( $filter ), current( $filter ) );
@@ -122,9 +159,16 @@ class Loader {
 	 * @param string                          $name
 	 * @param mixed                           $parameters
 	 */
-	private function register_shortcode( \Wpcl\WpPluginScaffolding\Interfaces\Shortcode_Hook_Subscriber $object, $name, $parameters ) {
-		if( is_string( $parameters )) {
-			add_shortcode( $name, array( $object, $parameters ) );
+	private function register_shortcode( \Wpcl\Scaffolding\Interfaces\Shortcode_Hook_Subscriber $object, $name, $parameters ) {
+		if( is_string( $parameters ) ) {
+			// If a class method
+			if( method_exists( $object, $parameters ) ) {
+				add_shortcode( $name, array( $object, $parameters ) );
+			}
+			// Else if a standard wordpress function
+			else if( function_exists( $parameters ) ) {
+				add_shortcode( $name, $parameters );
+			}
 		}
 	}
 
@@ -133,7 +177,7 @@ class Loader {
 	 *
 	 * @param Shortcode_Hook_SubscriberInterface $object
 	 */
-	private function register_shortcodes( \Wpcl\WpPluginScaffolding\Interfaces\Shortcode_Hook_Subscriber $object) {
+	private function register_shortcodes( \Wpcl\Scaffolding\Interfaces\Shortcode_Hook_Subscriber $object) {
 		foreach( $object->get_shortcodes() as $shortcode ) {
 			$this->register_shortcode( $object, key( $shortcode ), current( $shortcode ) );
 		}

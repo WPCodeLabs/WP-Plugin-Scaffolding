@@ -1,8 +1,8 @@
 <?php
 
-namespace Wpcl\WpPluginScaffolding\Classes;
+namespace Wpcl\Scaffolding\Classes;
 
-class PostTypes extends \Wpcl\WpPluginScaffolding\Plugin implements \Wpcl\WpPluginScaffolding\Interfaces\Action_Hook_Subscriber {
+class PostTypes extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interfaces\Action_Hook_Subscriber {
 	/**
 	 * Get the action hooks this class subscribes to.
 	 * @return array
@@ -22,15 +22,11 @@ class PostTypes extends \Wpcl\WpPluginScaffolding\Plugin implements \Wpcl\WpPlug
 		// Loop through each post type
 		foreach( $post_types as $post_type ) {
 			// Append namespace to post type
-			$class = '\\Wpcl\\WpPluginScaffolding\\Classes\\PostTypes\\' . $post_type;
+			$class = '\\Wpcl\\Scaffolding\\Classes\\PostTypes\\' . $post_type;
 			// Initialize post type
 			$pt = $class::register();
 			// Register with wordpress
 			register_post_type( $post_type, $pt::get_post_type_args() );
 		}
-	}
-
-	public static function get_post_types() {
-		return self::get_child_classes();
 	}
 }

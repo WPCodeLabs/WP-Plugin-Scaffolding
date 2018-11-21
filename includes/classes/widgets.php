@@ -2,14 +2,14 @@
 
 /**
  * The plugin file that controls the widget hooks
- * @link    http://midwestfamilymarketing.com
+ * @link    https://www.wpcodelabs.com
  * @since   1.0.0
- * @package wp_plugin_scaffolding
+ * @package wpcl_plugin_scaffolding
  */
 
-namespace Wpcl\WpPluginScaffolding\Classes;
+namespace Wpcl\Scaffolding\Classes;
 
-class Widgets extends \Wpcl\WpPluginScaffolding\Plugin implements \Wpcl\WpPluginScaffolding\Interfaces\Action_Hook_Subscriber {
+class Widgets extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interfaces\Action_Hook_Subscriber {
 
 	protected static $widgets = array();
 
@@ -29,7 +29,7 @@ class Widgets extends \Wpcl\WpPluginScaffolding\Plugin implements \Wpcl\WpPlugin
 		// Register each
 		foreach( $widgets as $widget ) {
 			// Append namespace to widget
-			$widget = '\\Wpcl\\WpPluginScaffolding\\Classes\\Widgets\\' . $widget;
+			$widget = '\\Wpcl\\Scaffolding\\Classes\\Widgets\\' . $widget;
 			// Register with wordpress
 			register_widget( $widget );
 		}

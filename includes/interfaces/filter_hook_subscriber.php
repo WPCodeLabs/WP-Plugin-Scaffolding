@@ -1,6 +1,6 @@
 <?php
 
-namespace Wpcl\WpPluginScaffolding\Interfaces;
+namespace Wpcl\Scaffolding\Interfaces;
 
 /**
  * Filter_Hook_SubscriberInterface is used by an object that needs to subscribe to

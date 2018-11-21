@@ -4,12 +4,12 @@
  * Fired during plugin activation
  *
  * This class defines all code necessary to run during the plugin's activation.
- * @link    http://midwestfamilymarketing.com
+ * @link    https://www.wpcodelabs.com
  * @since   1.0.0
  * @package mdm_wp_cornerstone
  */
 
-namespace Wpcl\WpPluginScaffolding;
+namespace Wpcl\Scaffolding;
 
 class Activator {
 
@@ -21,9 +21,9 @@ class Activator {
 	 */
 	public static function activate() {
 		// Register post types
-		\Wpcl\WpPluginScaffolding\Classes\PostTypes::add_post_types();
+		\Wpcl\Scaffolding\Classes\PostTypes::add_post_types();
 		// Register taxonomies
-		\Wpcl\WpPluginScaffolding\Classes\Taxonomies::add_taxonomies();
+		\Wpcl\Scaffolding\Classes\Taxonomies::add_taxonomies();
 		// Flush rewrite rules
 		self::flush_permalinks();
 	}

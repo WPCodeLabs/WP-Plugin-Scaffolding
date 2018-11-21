@@ -1,6 +1,6 @@
 <?php
 
-namespace Wpcl\WpPluginScaffolding\Interfaces;
+namespace Wpcl\Scaffolding\Interfaces;
 
 /**
  * Action_Hook_Subscriber is used by an object that needs to subscribe to

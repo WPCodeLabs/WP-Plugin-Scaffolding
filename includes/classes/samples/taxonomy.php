@@ -1,8 +1,8 @@
 <?php
 
-namespace Wpcl\WpPluginScaffolding\Classes\Taxonomies;
+namespace Wpcl\Scaffolding\Classes\Taxonomies;
 
-class Sample extends \Wpcl\WpPluginScaffolding\Classes\Taxonomies {
+class Taxonomy extends \Wpcl\Scaffolding\Plugin {
 
 	/**
 	 * Get taxomony arguments
@@ -54,6 +54,6 @@ class Sample extends \Wpcl\WpPluginScaffolding\Classes\Taxonomies {
 	 * @return array : Array of all post types this taxonomy belongs to
 	 */
 	public static function get_tax_post_types() {
-		return array( 'sample' );
+		return array( 'posttype' );
 	}
 }

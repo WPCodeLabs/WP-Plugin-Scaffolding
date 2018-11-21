@@ -3,23 +3,23 @@
  * The plugin bootstrap file
  * This file is read by WordPress to generate the plugin information in the plugin admin area.
  * This file also defines plugin parameters, registers the activation and deactivation functions, and defines a function that starts the plugin.
- * @link    https://github.com/WPCodeLabs/WP-Plugin-Scaffolding
+ * @link    https://bitbucket.org/midwestdigitalmarketing/cornerstone/
  * @since   1.0.0
- * @package wp_plugin_scaffolding
+ * @package wpcl_plugin_scaffolding
  *
  * @wordpress-plugin
- * Plugin Name: WP Plugin Scaffolding
- * Plugin URI:  https://github.com/WPCodeLabs/WP-Plugin-Scaffolding
- * Description: A plugin for querying and displaying any type of post from WordPress
+ * Plugin Name: WPCL Plugin Scaffolding
+ * Plugin URI:  https://bitbucket.org/midwestdigitalmarketing/cornerstone/
+ * Description: Plugin Scaffolding
  * Version:     0.1.0
  * Author:      WP Code Labs
  * Author URI:  https://www.wpcodelabs.com
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain: wp_plugin_scaffolding
+ * Text Domain: wpcl_plugin_scaffolding
  */
 
-define( 'WP_PLUGIN_SCAFFOLDING_ROOT', __FILE__ );
+define( 'WPCL_PLUGIN_SCAFFOLDING_ROOT', __FILE__ );
 
 // If this file is called directly, abort
 if ( !defined( 'WPINC' ) ) {
@@ -34,13 +34,13 @@ if ( !defined( 'WPINC' ) ) {
  * @see http://php.net/manual/en/function.spl-autoload-register.php
  * @param (string) $className : fully qualified classname to load
  */
-function wp_plugin_scaffolding_autoload_register( $className ) {
+function wpcl_plugin_scaffolding_autoload_register( $className ) {
 	// Reject it if not a string
 	if( !is_string( $className ) ) {
 		return false;
 	}
 	// Check and make damned sure we're only loading things from this namespace
-	if( strpos( $className, 'Wpcl\WpPluginScaffolding' ) === false ) {
+	if( strpos( $className, 'Wpcl\Scaffolding' ) === false ) {
 		return false;
 	}
 	// Replace backslashes
@@ -48,9 +48,9 @@ function wp_plugin_scaffolding_autoload_register( $className ) {
 	// Ensure there is no slash at the beginning of the classname
 	$className = ltrim( $className, '/' );
 	// Replace some known constants
-	$className = str_ireplace( 'Wpcl/WpPluginScaffolding/', '', $className );
+	$className = str_ireplace( 'Wpcl/Scaffolding/', '', $className );
 	// Append full path to class
-	$path  = sprintf( '%1$sincludes/%2$s.php', plugin_dir_path( __FILE__ ), $className );
+	$path  = sprintf( '%1$sincludes/%2$s.php', plugin_dir_path( WPCL_PLUGIN_SCAFFOLDING_ROOT ), $className );
 	// include the class...
 	if( file_exists( $path ) ) {
 		include_once( $path );
@@ -60,8 +60,8 @@ function wp_plugin_scaffolding_autoload_register( $className ) {
 /**
  * Code to run during plugin activation
  */
-function wp_plugin_scaffolding_activate() {
-	\Wpcl\WpPluginScaffolding\Activator::activate();
+function wpcl_plugin_scaffolding_activate() {
+	\Wpcl\Scaffolding\Activator::activate();
 }
 
 /**
@@ -69,10 +69,10 @@ function wp_plugin_scaffolding_activate() {
  * Check PHP version and make sure our other funcitons will be supported
  * Register autoloader function
  * Register activation & deactivation hooks
- * Create an install of our controller
+ * Create an instance of our main plugin class
  * Finally, Burn Baby Burn...
  */
-function run_wp_plugin_scaffolding() {
+function wpcl_plugin_scaffolding_run() {
 	// If version is less than minimum, register notice
 	if( version_compare( '5.3.0', phpversion(), '>=' ) ) {
 		// Deactivate plugin
@@ -81,13 +81,13 @@ function run_wp_plugin_scaffolding() {
 		wp_die( 'Irks! This plugin requires minimum PHP v5.3.0 to run. Please update your version of PHP.' );
 	}
 	// Register Autoloader
-	spl_autoload_register( 'wp_plugin_scaffolding_autoload_register' );
+	spl_autoload_register( 'wpcl_plugin_scaffolding_autoload_register' );
 	// Add activation hook
-	register_activation_hook( WP_PLUGIN_SCAFFOLDING_ROOT, 'wp_plugin_scaffolding_activate' );
+	register_activation_hook( WPCL_PLUGIN_SCAFFOLDING_ROOT, 'wpcl_plugin_scaffolding_activate' );
 	// Instantiate our plugin
-	$plugin = \Wpcl\WpPluginScaffolding\Plugin::get_instance();
+	$plugin = \Wpcl\Scaffolding\Plugin::get_instance();
 	// Test our plugin
 	$plugin->burn_baby_burn();
 
 }
-run_wp_plugin_scaffolding();
+wpcl_plugin_scaffolding_run();

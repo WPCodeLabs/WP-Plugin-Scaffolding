@@ -1,8 +1,8 @@
 <?php
 
-namespace Wpcl\WpPluginScaffolding\Classes;
+namespace Wpcl\Scaffolding\Classes;
 
-class Taxonomies extends \Wpcl\WpPluginScaffolding\Plugin implements \Wpcl\WpPluginScaffolding\Interfaces\Action_Hook_Subscriber {
+class Taxonomies extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interfaces\Action_Hook_Subscriber {
 
 	/**
 	 * Get the action hooks this class subscribes to.
@@ -25,7 +25,7 @@ class Taxonomies extends \Wpcl\WpPluginScaffolding\Plugin implements \Wpcl\WpPlu
 		// Iterate and register each
 		foreach( $taxonomies as $taxonomy ) {
 			// Append namespace to taxonomy
-			$class = '\\Wpcl\\WpPluginScaffolding\\Classes\\Taxonomies\\' . $taxonomy;
+			$class = '\\Wpcl\\Scaffolding\\Classes\\Taxonomies\\' . $taxonomy;
 			// Initialize post type
 			$tax = $class::register();
 			// Get the post types the taxonomy belongs to
