@@ -102,7 +102,9 @@ class Plugin {
 
 	public function burn_baby_burn() {
 
-		foreach( array( 'Admin', 'FrontEnd', 'PostTypes', 'Taxonomies', 'Widgets' ) as $class ) {
+		$classes = self::get_child_classes();
+
+		foreach( $classes as $class => $path ) {
 
 			$class = '\\Wpcl\\Scaffolding\\Classes\\' . $class;
 
@@ -113,6 +115,7 @@ class Plugin {
 	}
 
 	protected static function get_child_classes( $path = null ) {
+		$classes = array();
 		// Try to create path from called class if no path is passed in
 		if( empty( $path ) ) {
 			// Use ReflectionClass to get the shortname
@@ -121,27 +124,15 @@ class Plugin {
 			$path = self::path( sprintf( 'includes/classes/%s/', strtolower( $reflection->getShortName() ) ) );
 
 		}
-		// Bail if our path is not a directory
-		if( !is_dir( $path ) ) {
-			return array();
-		}
-		// Empty array to hold post types
-		$classes = array();
-		// Get all files in directory
-		$files = scandir( $path );
 
-		// If empty, we can bail
-		if( !is_array( $files ) || empty( $files ) ) {
-			return array();
-		}
-		// Iterate over all found files
+		$files = glob( trailingslashit( $path ) . '*.php' );
+
 		foreach( $files as $file ) {
-			if( strpos( $file, '.php' ) === false ) {
-				continue;
-			}
-			$classes[] = str_replace( '.php', '', $file );
+			$classes[] = array(
+				str_replace( '.php', '', basename( $file ) ) => $file,
+			);
 		}
-		// Return child classes;
+
 		return $classes;
 	}
 

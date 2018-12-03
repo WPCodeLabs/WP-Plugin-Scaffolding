@@ -20,7 +20,7 @@ class PostTypes extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\In
 		// Get all post types
 		$post_types = self::get_child_classes();
 		// Loop through each post type
-		foreach( $post_types as $post_type ) {
+		foreach( $post_types as $post_type => $path ) {
 			// Append namespace to post type
 			$class = '\\Wpcl\\Scaffolding\\Classes\\PostTypes\\' . $post_type;
 			// Initialize post type
