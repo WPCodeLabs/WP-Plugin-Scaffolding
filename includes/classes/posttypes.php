@@ -7,7 +7,7 @@ class PostTypes extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\In
 	 * Get the action hooks this class subscribes to.
 	 * @return array
 	 */
-	public static function get_actions() {
+	public function get_actions() {
 		return array(
 			array( 'init' => 'add_post_types' ),
 		);
@@ -18,11 +18,11 @@ class PostTypes extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\In
 	 */
 	public static function add_post_types() {
 		// Get all post types
-		$post_types = self::get_child_classes();
+		$post_types = self::get_child_classes( 'includes/posttypes' );
 		// Loop through each post type
 		foreach( $post_types as $post_type => $path ) {
 			// Append namespace to post type
-			$class = '\\Wpcl\\Scaffolding\\Classes\\PostTypes\\' . $post_type;
+			$class = '\\Wpcl\\Scaffolding\\PostTypes\\' . $post_type;
 			// Initialize post type
 			$pt = $class::register();
 			// Register with wordpress

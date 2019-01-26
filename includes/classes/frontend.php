@@ -15,7 +15,7 @@ class FrontEnd extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Int
 	 * Get the action hooks this class subscribes to.
 	 * @return array
 	 */
-	public static function get_actions() {
+	public function get_actions() {
 		return array(
 			array( 'wp_enqueue_scripts' => 'enqueue_scripts' ),
 			array( 'wp_enqueue_scripts' => 'enqueue_styles' ),
@@ -26,7 +26,7 @@ class FrontEnd extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Int
 	 * Get the filter hooks this class subscribes to.
 	 * @return array
 	 */
-	public static function get_filters() {
+	public function get_filters() {
 		return array(
 			// Put filters here
 		);

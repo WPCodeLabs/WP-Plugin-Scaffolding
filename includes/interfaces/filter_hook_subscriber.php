@@ -25,5 +25,5 @@ interface Filter_Hook_Subscriber
      *
      * @return array
      */
-    public static function get_filters();
+    public function get_filters();
 }

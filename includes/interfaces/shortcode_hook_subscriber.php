@@ -23,5 +23,5 @@ interface Shortcode_Hook_Subscriber
      *
      * @return array
      */
-    public static function get_shortcodes();
+    public function get_shortcodes();
 }

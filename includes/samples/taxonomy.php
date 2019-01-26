@@ -1,6 +1,6 @@
 <?php
 
-namespace Wpcl\Scaffolding\Classes\Taxonomies;
+namespace Wpcl\Scaffolding\Taxonomies;
 
 class Taxonomy extends \Wpcl\Scaffolding\Plugin {
 

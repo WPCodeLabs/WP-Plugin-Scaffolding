@@ -15,7 +15,7 @@ class Admin extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interf
 	 * Get the action hooks this class subscribes to.
 	 * @return array
 	 */
-	public static function get_actions() {
+	public function get_actions() {
 		return array(
 			array( 'admin_enqueue_scripts' => 'enqueue_scripts' ),
 			array( 'admin_enqueue_scripts' => 'enqueue_styles' ),
@@ -27,7 +27,7 @@ class Admin extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interf
 	 * Get the filter hooks this class subscribes to.
 	 * @return array
 	 */
-	public static function get_filters() {
+	public function get_filters() {
 		return array(
 			// Put filters here
 		);

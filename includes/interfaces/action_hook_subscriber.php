@@ -25,5 +25,5 @@ interface Action_Hook_Subscriber
      *
      * @return array
      */
-    public static function get_actions();
+    public function get_actions();
 }

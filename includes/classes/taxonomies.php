@@ -8,7 +8,7 @@ class Taxonomies extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\I
 	 * Get the action hooks this class subscribes to.
 	 * @return array
 	 */
-	public static function get_actions() {
+	public function get_actions() {
 		return array(
 			array( 'init' => 'add_taxonomies' ),
 		);
@@ -21,11 +21,11 @@ class Taxonomies extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\I
 	 */
 	public static function add_taxonomies() {
 		// Get all taxonomies
-		$taxonomies = self::get_child_classes();
+		$taxonomies = self::get_child_classes( 'includes/taxonomies' );
 		// Iterate and register each
 		foreach( $taxonomies as $taxonomy => $path ) {
 			// Append namespace to taxonomy
-			$class = '\\Wpcl\\Scaffolding\\Classes\\Taxonomies\\' . $taxonomy;
+			$class = '\\Wpcl\\Scaffolding\\Taxonomies\\' . $taxonomy;
 			// Initialize post type
 			$tax = $class::register();
 			// Get the post types the taxonomy belongs to

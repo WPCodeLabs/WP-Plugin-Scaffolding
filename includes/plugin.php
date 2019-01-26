@@ -3,7 +3,6 @@
 /**
  * The main plugin file definition
  * This file isn't instatiated directly, it acts as a shared parent for other classes
- * @link    http://midwestdigitalmarketing.com
  * @since   1.0.0
  * @package wpcl_plugin_scaffolding
  */

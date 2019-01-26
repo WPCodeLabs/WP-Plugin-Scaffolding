@@ -1,6 +1,6 @@
 <?php
 
-namespace Wpcl\Scaffolding\Classes\PostTypes;
+namespace Wpcl\Scaffolding\PostTypes;
 
 class PostType extends \Wpcl\Scaffolding\Plugin {
 
