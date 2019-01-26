@@ -4,7 +4,7 @@ namespace Wpcl\Scaffolding\Widgets;
 
 use Wpcl\Scaffolding\Plugin as Plugin;
 
-class Sample extends \WP_Widget {
+class Widget extends \WP_Widget {
 
 	/**
 	 * Root ID for all widgets of this type.
@@ -58,7 +58,7 @@ class Sample extends \WP_Widget {
 	 */
 	public function __construct() {
 		$this->id_base = 'sample_widget_id';
-		$this->name    = 'Sample Widget';
+		$this->name = 'Sample Widget';
 		$this->widget_options = array(
 			'classname'   => 'sample_widget_class',
 			'description' => 'Sample Widget',
@@ -68,17 +68,22 @@ class Sample extends \WP_Widget {
 			'title' => array(
 				'type' => 'text',
 				'label' => 'Title',
-				'default' => null,
+				'default' => '',
 			),
 			'my_textarea' => array(
 				'type' => 'textarea',
 				'label' => 'Sample Textarea',
-				'default' => null,
+				'default' => '',
 			),
 			'my_select' => array(
 				'type' => 'select',
-				'label' => 'Sample Textarea',
-				'default' => null,
+				'label' => 'Sample Select',
+				'default' => '',
+				'options' => array(
+					'' => __( 'Select Option', 'wpcl_plugin_scaffolding' ),
+					'1' => __( 'Option 1', 'wpcl_plugin_scaffolding' ),
+					'2' => __( 'Option 2', 'wpcl_plugin_scaffolding' ),
+				),
 			),
 			'my_checkbox' => array(
 				'type' => 'checkbox',
@@ -88,11 +93,14 @@ class Sample extends \WP_Widget {
 			'my_radio' => array(
 				'type' => 'radio',
 				'label' => 'Sample Radio',
-				'default' => false,
+				'default' => '1',
+				'options' => array(
+					'1' => __( 'Option 1', 'wpcl_plugin_scaffolding' ),
+					'2' => __( 'Option 2', 'wpcl_plugin_scaffolding' ),
+				),
 			),
 		);
-
-		parent::__construct( $this->widget_id_base, $this->widget_name, $this->widget_options );
+		parent::__construct( $this->id_base, $this->name, $this->widget_options );
 
 	}
 
@@ -105,7 +113,6 @@ class Sample extends \WP_Widget {
 	public function form( $instance ) {
 
 		printf( '<div class="%s_widget_form">', $this->id_base );
-
 		/**
 		 * Loop through each field and add to widget form
 		 */
@@ -113,13 +120,19 @@ class Sample extends \WP_Widget {
 			/**
 			 * Set value, or default
 			 */
-			if( !isset( $instance[$field] ) ) {
+			if( !isset( $instance[$field] ) || empty( $instance[$field] ) ) {
 				$instance[$field] = $args['default'];
 			}
+			if( file_exists( Plugin::path( "includes/widgets/inputs/{$args['type']}.php" ) ) ) {
 
-			if( file_exists( Plugin::path( "includes/widgets/partials/{$args['type']}.php" ) ) ) {
-				echo '<div class="field">';
-					include Plugin::path( "includes/widgets/partials/{$args['type']}.php" );
+				echo '<div class="field" style="margin-bottom: 10px;">';
+
+					include Plugin::path( "includes/widgets/inputs/{$args['type']}.php" );
+
+					if( isset( $args['description'] ) && !empty( $args['description'] ) )  {
+						printf( '<p class="description">%s</p>', esc_attr( $args['description'] ) );
+					}
+
 				echo '</div>';
 			}
 
@@ -138,18 +151,10 @@ class Sample extends \WP_Widget {
 		 * Loop through each field and sanitize
 		 */
 		foreach( $this->fields as $field => $args ) {
-			/**
-			 * If not set, use the default
-			 */
-			if( !isset( $instance[$field] ) ) {
-				$instance[$field] = isset( $old_instance[$field] ) ? $old_instance[$field] : $args['default'];
-			}
-			else {
-				if( isset( $args['sanitize'] ) ) {
-					$instance[$field] = call_user_func( $args['sanitize'], $instance[$field] );
-				} else {
-					$instance[$field] = sanitize_text_field( $instance[$field] );
-				}
+			if( isset( $args['sanitize'] ) && function_exists( $args['sanitize'] ) ) {
+				$instance[$field] = call_user_func( $args['sanitize'], $new_instance[$field] );
+			} else {
+				$instance[$field] = sanitize_text_field( $new_instance[$field] );
 			}
 		}
 		return $instance;

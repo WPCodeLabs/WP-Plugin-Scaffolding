@@ -25,7 +25,7 @@ class Widgets extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Inte
 
 	public function add_widgets() {
 		// Get all widgets
-		$widgets = self::get_child_classes( 'includes/widgets' );
+		$widgets = self::get_child_classes( self::path( 'includes/widgets' ) );
 		// Register each
 		foreach( $widgets as $widget => $path ) {
 			// Append namespace to widget

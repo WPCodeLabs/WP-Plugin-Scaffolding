@@ -40,7 +40,7 @@ class FrontEnd extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Int
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( sprintf( '%s_public', self::$name ), self::url( 'assets/js/public.min.js' ), array( 'jquery' ), self::$version, true );
+		wp_enqueue_script( sprintf( '%s_public', self::$name ), self::url( 'assets/js/public.js' ), array( 'jquery' ), self::$version, true );
 
 		$script_args = apply_filters( self::$name . '_public_script_args', array(
 			'wpajaxurl' => admin_url( 'admin-ajax.php'),

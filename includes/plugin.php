@@ -101,7 +101,7 @@ class Plugin {
 
 	public function burn_baby_burn() {
 
-		$classes = self::get_child_classes();
+		$classes = self::get_child_classes( self::path( 'includes/classes' ) );
 
 		foreach( $classes as $class => $path ) {
 
@@ -127,9 +127,7 @@ class Plugin {
 		$files = glob( trailingslashit( $path ) . '*.php' );
 
 		foreach( $files as $file ) {
-			$classes[] = array(
-				str_replace( '.php', '', basename( $file ) ) => $file,
-			);
+			$classes[str_replace( '.php', '', basename( $file ) )] = $file;
 		}
 
 		return $classes;

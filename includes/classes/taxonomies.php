@@ -21,7 +21,7 @@ class Taxonomies extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\I
 	 */
 	public static function add_taxonomies() {
 		// Get all taxonomies
-		$taxonomies = self::get_child_classes( 'includes/taxonomies' );
+		$taxonomies = self::get_child_classes( self::path( 'includes/taxonomies' ) );
 		// Iterate and register each
 		foreach( $taxonomies as $taxonomy => $path ) {
 			// Append namespace to taxonomy

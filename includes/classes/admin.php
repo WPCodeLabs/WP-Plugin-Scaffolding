@@ -40,7 +40,7 @@ class Admin extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interf
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( sprintf( '%s_admin', self::$name ), self::url( 'assets/js/admin.min.js' ), array( 'jquery' ), self::$version, true );
+		wp_enqueue_script( sprintf( '%s_admin', self::$name ), self::url( 'assets/js/admin.js' ), array( 'jquery' ), self::$version, true );
 
 		$script_args = apply_filters( self::$name . '_admin_script_args', array(
 			'wpajaxurl' => admin_url( 'admin-ajax.php'),
