@@ -1,12 +1,5 @@
 <?php
 
-/**
- * The plugin file that controls the admin functions
- * @link    https://www.wpcodelabs.com
- * @since   1.0.0
- * @package mdm_wp_cornerstone
- */
-
 namespace Wpcl\Scaffolding\Classes;
 
 class Admin extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interfaces\Action_Hook_Subscriber, \Wpcl\Scaffolding\Interfaces\Filter_Hook_Subscriber {
@@ -39,14 +32,8 @@ class Admin extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interf
 	 * @since 1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		wp_enqueue_script( sprintf( '%s_admin', self::$name ), self::url( 'assets/js/admin.js' ), array( 'jquery' ), self::$version, true );
-
-		$script_args = apply_filters( self::$name . '_admin_script_args', array(
-			'wpajaxurl' => admin_url( 'admin-ajax.php'),
-		) );
-
-		wp_localize_script( sprintf( '%s_admin', self::$name ), self::$name, $script_args );
+		wp_enqueue_script( 'wpcl_plugin_scaffolding_admin', self::url( 'assets/js/admin.js' ), array( 'jquery' ), WPCL_PLUGIN_SCAFFOLDING_VERSION, true );
+		wp_localize_script( 'wpcl_plugin_scaffolding_admin', 'wpcl_plugin_scaffolding', array( 'wpajaxurl' => admin_url( 'admin-ajax.php') ) );
 	}
 
 	/**
@@ -55,7 +42,7 @@ class Admin extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interf
 	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( sprintf( '%s_admin', self::$name ), self::url( 'assets/css/admin.css' ), array(), self::$version, 'all' );
+		wp_enqueue_style( 'wpcl_plugin_scaffolding_admin', self::url( 'assets/css/admin.css' ), array(), WPCL_PLUGIN_SCAFFOLDING_VERSION, 'all' );
 	}
 
 } // end class

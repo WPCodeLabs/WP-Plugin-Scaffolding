@@ -2,7 +2,7 @@
 
 namespace Wpcl\Scaffolding\PostTypes;
 
-class PostType extends \Wpcl\Scaffolding\Plugin {
+class SamplePostType extends \Wpcl\Scaffolding\Plugin {
 
 	/**
 	 * Get post type arguments
@@ -14,8 +14,8 @@ class PostType extends \Wpcl\Scaffolding\Plugin {
 	 */
 	public static function get_post_type_args() {
 		$labels = array(
-			'name'                  => _x( 'Samples', 'Post Type General Name', 'wpcl_plugin_scaffolding' ),
-			'singular_name'         => _x( 'Sample', 'Post Type Singular Name', 'wpcl_plugin_scaffolding' ),
+			'name'                  => _x( 'Sample Post Type', 'Post Type General Name', 'wpcl_plugin_scaffolding' ),
+			'singular_name'         => _x( 'Sample Post Type', 'Post Type Singular Name', 'wpcl_plugin_scaffolding' ),
 			'menu_name'             => __( 'Sample Post Type', 'wpcl_plugin_scaffolding' ),
 			'name_admin_bar'        => __( 'Sample Post Type', 'wpcl_plugin_scaffolding' ),
 			'archives'              => __( 'Item Archives', 'wpcl_plugin_scaffolding' ),
@@ -43,13 +43,13 @@ class PostType extends \Wpcl\Scaffolding\Plugin {
 			'filter_items_list'     => __( 'Filter items list', 'wpcl_plugin_scaffolding' ),
 		);
 		$rewrite = array(
-			'slug'                  => 'samples',
+			'slug'                  => 'sample-post-type',
 			'with_front'            => true,
 			'pages'                 => true,
 			'feeds'                 => true,
 		);
 		$args = array(
-			'label'                 => __( 'Sample', 'wpcl_plugin_scaffolding' ),
+			'label'                 => __( 'Sample Post Type', 'wpcl_plugin_scaffolding' ),
 			'description'           => __( 'Post Type Description', 'wpcl_plugin_scaffolding' ),
 			'labels'                => $labels,
 			'supports'              => array( 'title', 'editor', 'author', 'thumbnail', 'revisions', 'excerpt', 'genesis-seo', 'genesis-cpt-archives-settings', 'genesis-layouts', 'genesis-scripts' ),

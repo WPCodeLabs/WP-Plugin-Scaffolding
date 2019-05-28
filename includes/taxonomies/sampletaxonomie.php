@@ -2,7 +2,7 @@
 
 namespace Wpcl\Scaffolding\Taxonomies;
 
-class Taxonomy extends \Wpcl\Scaffolding\Plugin {
+class SampleTaxonomie extends \Wpcl\Scaffolding\Plugin {
 
 	/**
 	 * Get taxomony arguments
@@ -54,6 +54,6 @@ class Taxonomy extends \Wpcl\Scaffolding\Plugin {
 	 * @return array : Array of all post types this taxonomy belongs to
 	 */
 	public static function get_tax_post_types() {
-		return array( 'posttype' );
+		return array( 'sampleposttype' );
 	}
 }

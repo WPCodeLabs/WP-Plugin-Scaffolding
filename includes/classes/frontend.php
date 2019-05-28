@@ -1,15 +1,8 @@
 <?php
 
-/**
- * The plugin file that controls core wp tweaks and configurations
- * @link    https://www.wpcodelabs.com
- * @since   1.0.0
- * @package mdm_wp_cornerstone
- */
-
 namespace Wpcl\Scaffolding\Classes;
 
-class FrontEnd extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interfaces\Action_Hook_Subscriber, \Wpcl\Scaffolding\Interfaces\Filter_Hook_Subscriber {
+class FrontEnd extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Interfaces\Action_Hook_Subscriber, \Wpcl\Scaffolding\Interfaces\Filter_Hook_Subscriber, \Wpcl\Scaffolding\Interfaces\Shortcode_Hook_Subscriber {
 
 	/**
 	 * Get the action hooks this class subscribes to.
@@ -32,6 +25,16 @@ class FrontEnd extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Int
 		);
 	}
 
+	/**
+	 * Get the shortcode hooks this class subscribes to.
+	 * @return array
+	 */
+	public function get_shortcodes() {
+		return array(
+			array( 'sample_shortcode' => 'sample_shortcode' ),
+		);
+	}
+
 
 	/**
 	 * Register the javascript for the frontend
@@ -39,14 +42,8 @@ class FrontEnd extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Int
 	 * @since 1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		wp_enqueue_script( sprintf( '%s_public', self::$name ), self::url( 'assets/js/public.js' ), array( 'jquery' ), self::$version, true );
-
-		$script_args = apply_filters( self::$name . '_public_script_args', array(
-			'wpajaxurl' => admin_url( 'admin-ajax.php'),
-		) );
-
-		wp_localize_script( sprintf( '%s_public', self::$name ), self::$name, $script_args );
+		wp_enqueue_script( 'wpcl_plugin_scaffolding_public', self::url( 'assets/js/public.js' ), array( 'jquery' ), WPCL_PLUGIN_SCAFFOLDING_VERSION, true );
+		wp_localize_script( 'wpcl_plugin_scaffolding_public', 'wpcl_plugin_scaffolding', array( 'wpajaxurl' => admin_url( 'admin-ajax.php') ) );
 	}
 
 
@@ -56,7 +53,15 @@ class FrontEnd extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\Int
 	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( sprintf( '%s_public', self::$name ), self::url( 'assets/css/public.css' ), array( ), self::$version, 'all' );
+		wp_enqueue_style( 'wpcl_plugin_scaffolding_public', self::url( 'assets/css/public.css' ), array(), WPCL_PLUGIN_SCAFFOLDING_VERSION, 'all' );
+	}
+
+	/**
+	 * Sample Shortcode
+	 */
+	public function sample_shortcode( $atts = array() ) {
+		$atts = shortcode_atts( array( 'message' => 'Sample Shortcode Message' ), $atts, 'sample_shortcode' );
+		return '<p>' . esc_attr( $atts['message'] ) . '</p>';
 	}
 
 } // end class

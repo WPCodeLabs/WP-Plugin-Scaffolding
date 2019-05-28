@@ -20,10 +20,11 @@ class Taxonomies extends \Wpcl\Scaffolding\Plugin implements \Wpcl\Scaffolding\I
 	 * @see https://codex.wordpress.org/Function_Reference/register_taxonomy
 	 */
 	public static function add_taxonomies() {
-		// Get all taxonomies
-		$taxonomies = self::get_child_classes( self::path( 'includes/taxonomies' ) );
+		$taxonomies = array(
+			'SampleTaxonomie',
+		);
 		// Iterate and register each
-		foreach( $taxonomies as $taxonomy => $path ) {
+		foreach( $taxonomies as $taxonomy ) {
 			// Append namespace to taxonomy
 			$class = '\\Wpcl\\Scaffolding\\Taxonomies\\' . $taxonomy;
 			// Initialize post type

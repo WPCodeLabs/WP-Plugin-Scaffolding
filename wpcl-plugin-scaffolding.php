@@ -11,7 +11,7 @@
  * Plugin Name: WPCL Plugin Scaffolding
  * Plugin URI:  https://bitbucket.org/midwestdigitalmarketing/cornerstone/
  * Description: Plugin Scaffolding
- * Version:     0.1.0
+ * Version:     1.0.0
  * Author:      WP Code Labs
  * Author URI:  https://www.wpcodelabs.com
  * License:     GPL-2.0+
@@ -20,6 +20,8 @@
  */
 
 define( 'WPCL_PLUGIN_SCAFFOLDING_ROOT', __FILE__ );
+
+define( 'WPCL_PLUGIN_SCAFFOLDING_VERSION', '1.0.0' );
 
 // If this file is called directly, abort
 if ( !defined( 'WPINC' ) ) {

@@ -1,31 +1,8 @@
 <?php
 
-/**
- * The main plugin file definition
- * This file isn't instatiated directly, it acts as a shared parent for other classes
- * @since   1.0.0
- * @package wpcl_plugin_scaffolding
- */
-
 namespace Wpcl\Scaffolding;
 
 class Plugin {
-
-	/**
-	 * Plugin Name
-	 * @since 1.0.0
-	 * @access protected
-	 * @var (string) $name : The unique identifier for this plugin
-	 */
-	protected static $name = 'wpcl_plugin_scaffolding';
-
-	/**
-	 * Plugin Version
-	 * @since 1.0.0
-	 * @access protected
-	 * @var (string) $version : The version number of the plugin, used to version scripts / styles
-	 */
-	protected static $version = '0.1.0';
 
 	/**
 	 * Plugin Options
@@ -101,46 +78,16 @@ class Plugin {
 
 	public function burn_baby_burn() {
 
-		$classes = self::get_child_classes( self::path( 'includes/classes' ) );
+		$classes = array( 'Admin', 'Frontend', 'PostTypes', 'Taxonomies', 'Widgets' );
 
-		foreach( $classes as $class => $path ) {
+		foreach( $classes as $class ) {
 
 			$class = '\\Wpcl\\Scaffolding\\Classes\\' . $class;
 
 			$class::register();
 		}
 
-		load_plugin_textdomain( self::$name, false, basename( dirname( WPCL_PLUGIN_SCAFFOLDING_ROOT ) ) . '/languages' );
-	}
-
-	protected static function get_child_classes( $path = null ) {
-		$classes = array();
-		// Try to create path from called class if no path is passed in
-		if( empty( $path ) ) {
-			// Use ReflectionClass to get the shortname
-			$reflection = new \ReflectionClass( get_called_class() );
-			// Attempt to construct to path
-			$path = self::path( sprintf( 'includes/classes/%s/', strtolower( $reflection->getShortName() ) ) );
-
-		}
-
-		$files = glob( trailingslashit( $path ) . '*.php' );
-
-		foreach( $files as $file ) {
-			$classes[str_replace( '.php', '', basename( $file ) )] = $file;
-		}
-
-		return $classes;
-	}
-
-	public static function expose( $item ) {
-		if( is_admin() ) {
-			echo '<pre style="margin-left: 200px">';
-		} else {
-			echo '<pre>';
-		}
-		print_r( $item );
-		echo '</pre>';
+		load_plugin_textdomain( 'wpcl_plugin_scaffolding', false, basename( dirname( WPCL_PLUGIN_SCAFFOLDING_ROOT ) ) . '/languages' );
 	}
 
 } // end class
